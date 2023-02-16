@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply flex min-h-screen w-[100vw] flex-1 flex-col text-black;
+  color-scheme: light;
+}
+
+html,
+body,
+.bg {
+  @apply bg-slate-100;
+}
+
+html.dark,
+.dark body,
+.dark .bg {
+  @apply bg-slate-900;
+}
+
+html.dark,
+.dark body {
+  @apply text-slate-300;
+  color-scheme: dark;
+}
+
+@media print {
+  html,
+  html.dark,
+  body,
+  .dark body {
+    @apply text-black;
+    color-scheme: light;
+  }
+
+  html,
+  html.dark,
+  body,
+  .dark body,
+  .bg,
+  .dark .bg {
+    @apply bg-white;
+  }
+}
+
+@font-face {
+  font-family: "linja sike";
+  src: url("./assets/linja-sike-5.otf");
+}
