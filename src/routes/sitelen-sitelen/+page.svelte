@@ -88,7 +88,7 @@
 </Printed>
 
 <div
-  class="mt-4 grid min-h-full grid-cols-[repeat(auto-fill,72px)] content-center justify-center gap-x-2 gap-y-3 text-center"
+  class="mt-4 grid min-h-full grid-cols-[repeat(auto-fill,72px)] content-start justify-center gap-x-2 gap-y-3 text-center"
 >
   {#each $isShuffled ? shuffle(words) : words as [word, src]}
     <div

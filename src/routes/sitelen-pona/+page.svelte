@@ -12,7 +12,10 @@
     )
 </script>
 
-<Title title="sitelen pona cheat sheet" />
+<Title
+  title="sitelen pona cheat sheet"
+  titleTp="lipu pi pali lili pi sitelen pona"
+/>
 
 <Printed>
   <p class="mb-2">
@@ -34,7 +37,7 @@
 <div
   class="grid min-h-full {$isLarge
     ? 'grid-cols-[repeat(auto-fill,72px)]'
-    : 'grid-cols-[repeat(auto-fill,52px)]'} content-center justify-center gap-2 text-center"
+    : 'grid-cols-[repeat(auto-fill,52px)]'} content-start justify-center gap-2 text-center"
 >
   {#each $isShuffled ? shuffle(words) : words as word}
     <div
