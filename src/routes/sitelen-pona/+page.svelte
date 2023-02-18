@@ -2,11 +2,12 @@
   import Checkbox from "$lib/Checkbox.svelte"
   import PracticeButton from "$lib/PracticeButton.svelte"
   import { shuffle } from "$lib/shuffle"
-  import { isLarge, isPractice, isShuffled } from "$lib/stores"
+  import { isLarge, isPractice, isShuffled, showDefinitions } from "$lib/stores"
   import Title from "$lib/Title.svelte"
+  import { words } from "virtual:linku"
   import Printed from "../../lib/Printed.svelte"
 
-  let words =
+  let wordList =
     "a akesi ala alasa ale anpa ante anu awen e en epiku esun ijo ike ilo insa jaki jan jasima jelo jo kala kalama kama kasi ken kepeken kijetesantakalu kili kin kipisi kiwen ko kokosila kon ku kule kulupu kute la lanpan lape laso lawa leko len lete li lili linja lipu loje lon luka lukin lupa ma mama mani meli meso mi mije misikeke moku moli monsi monsuta mu mun musi mute n namako nanpa nasa nasin nena ni nimi noka o oko olin ona open pakala pali palisa pan pana pi pilin pimeja pini pipi poka poki pona pu sama seli selo seme sewi sijelo sike sin sina sinpin sitelen soko sona soweli suli suno supa suwi tan taso tawa telo tenpo toki tomo tonsi tu unpa uta utala walo wan waso wawa weka wile".split(
       " "
     )
@@ -31,15 +32,25 @@
     labelTp="o ken ala ken lukin e sitelen suli?"
   />
 
+  <Checkbox
+    bind:checked={$showDefinitions}
+    label="Show definitions?"
+    labelTp="o ken ala ken lukin e nimi mute?"
+  />
+
   <PracticeButton />
 </Printed>
 
 <div
   class="grid min-h-full {$isLarge
-    ? 'grid-cols-[repeat(auto-fill,72px)]'
+    ? $showDefinitions
+      ? 'grid-cols-[repeat(auto-fill,128px)]'
+      : 'grid-cols-[repeat(auto-fill,72px)]'
+    : $showDefinitions
+    ? 'grid-cols-[repeat(auto-fill,112px)]'
     : 'grid-cols-[repeat(auto-fill,52px)]'} content-start justify-center gap-2 text-center"
 >
-  {#each $isShuffled ? shuffle(words) : words as word}
+  {#each $isShuffled ? shuffle(wordList) : wordList as word}
     <div
       class="flex break-inside-avoid flex-col"
       class:col-span-2={word == "kijetesantakalu"}
@@ -56,6 +67,14 @@
       </p>
 
       <p class="{$isLarge ? '' : 'text-sm'} font-light">{word}</p>
+
+      {#if $showDefinitions}
+        {@const definition = words[word]?.definition}
+
+        <p class="text-xs text-slate-500 hyphens print:text-black">
+          {definition}
+        </p>
+      {/if}
     </div>
   {/each}
 </div>

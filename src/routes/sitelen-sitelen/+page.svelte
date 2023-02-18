@@ -2,9 +2,10 @@
   import Checkbox from "$lib/Checkbox.svelte"
   import PracticeButton from "$lib/PracticeButton.svelte"
   import { shuffle } from "$lib/shuffle"
-  import { isPractice, isShuffled, tp } from "$lib/stores"
+  import { isPractice, isShuffled, showDefinitions, tp } from "$lib/stores"
   import Title from "$lib/Title.svelte"
   import { persisted } from "svelte-local-storage-store"
+  import { words } from "virtual:linku"
   import Printed from "../../lib/Printed.svelte"
 
   const showWords = persisted("sitelen-sitelen:show-words", true)
@@ -21,15 +22,17 @@
         }.jpg`,
       ])
 
-  let nmpi_mute: [string, string][] = [
-    ["[.]", "period"],
-    ["[,]", "comma"],
-    ["[!]", "exclamation"],
-    ["[?]", "question"],
-    ["[:]", "colon"],
-    ["[cartouche]", "cartouche"],
-    ["[capsule]", "capsule"],
-  ].map(([symbol, name]) => [
+  let nmpi_mute: [string, string][] = (
+    [
+      ["[.]", "period"],
+      ["[,]", "comma"],
+      ["[!]", "exclamation"],
+      ["[?]", "question"],
+      ["[:]", "colon"],
+      ["[cartouche]", "cartouche"],
+      ["[capsule]", "capsule"],
+    ] as const
+  ).map(([symbol, name]) => [
     symbol,
     `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_${name}.jpg`,
   ])
@@ -45,7 +48,7 @@
           .replace("-", "")}.jpg`,
       ])
 
-  $: words = [
+  $: wordList = [
     ...($showWords ? nimi_mute : []),
     ...($showPunctuation ? nmpi_mute : []),
     ...($showSyllables ? kala_lili_mute : []),
@@ -65,6 +68,12 @@
       >{$tp ? "lipu pi jan Jonatan" : "Jonathan Gabel's website"}</a
     >.
   </p>
+
+  <Checkbox
+    bind:checked={$showDefinitions}
+    label="Show definitions?"
+    labelTp="o ken lukin e nimi mute?"
+  />
 
   <Checkbox
     bind:checked={$showWords}
@@ -88,9 +97,13 @@
 </Printed>
 
 <div
-  class="mt-4 grid min-h-full grid-cols-[repeat(auto-fill,72px)] content-start justify-center gap-x-2 gap-y-3 text-center"
+  class="mt-4 grid min-h-full {$showDefinitions
+    ? 'grid-cols-[repeat(auto-fill,128px)]'
+    : 'grid-cols-[repeat(auto-fill,72px)]'} content-start justify-center gap-x-2 {$showDefinitions
+    ? 'gap-y-4'
+    : 'gap-y-3'} text-center"
 >
-  {#each $isShuffled ? shuffle(words) : words as [word, src]}
+  {#each $isShuffled ? shuffle(wordList) : wordList as [word, src]}
     <div
       class="flex break-inside-avoid flex-col items-center"
       class:col-span-2={word == "kijetesantakalu"}
@@ -112,6 +125,16 @@
       />
 
       <p class="whitespace-nowrap font-light">{word}</p>
+
+      {#if $showDefinitions}
+        {@const definition = words[word]?.definition}
+
+        {#if definition}
+          <p class="text-xs text-slate-500 hyphens print:text-black">
+            {definition}
+          </p>
+        {/if}
+      {/if}
     </div>
   {/each}
 </div>

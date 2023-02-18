@@ -20,3 +20,9 @@ export const isLarge = persisted("cheat-sheet:is-large", false, options)
 export const isPractice = persisted("cheat-sheet:is-practice", false, options)
 
 export const isShuffled = persisted("cheat-sheet:is-shuffled", false, options)
+
+export const showDefinitions = persisted(
+  "cheat-sheet:show-definitions",
+  false,
+  options
+)

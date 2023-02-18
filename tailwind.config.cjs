@@ -26,6 +26,9 @@ const config = {
         ".clip-triangle-top": {
           "clip-path": "polygon(0% 100%, 50% 0%, 100% 100%)",
         },
+        ".hyphens": {
+          hyphens: "auto",
+        },
       })
 
       api.addComponents({
