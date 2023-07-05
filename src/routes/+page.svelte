@@ -12,6 +12,7 @@
   import sitelenSitelen from "../assets/sitelen-sitelen-main.png"
   import sitelenSitelenRenderer from "../assets/sitelen-sitelen-renderer.png"
   import sonaPonaLogo from "../assets/sona-pona.png"
+  import tokiPonaCheatSheet from "../assets/toki-pona-cheat.png"
   import tokiPonaLogo from "../assets/toki-pona.svg"
   import Card from "../lib/Card.svelte"
   import Section from "../lib/Section.svelte"
@@ -74,9 +75,21 @@
   </div>
 
   <div
-    class="mx-auto mt-8 grid w-[1700px] max-w-full grid-cols-[repeat(auto-fill,min(24rem,100%))] justify-center gap-8"
+    class="mx-auto mt-8 grid w-[76rem] max-w-full grid-cols-[repeat(auto-fill,min(24rem,100%))] justify-center gap-8"
   >
-    <Section title="Reading material" titleTp="lipu">
+    <Section title="toki pona" titleTp="toki pona pi sitelen Lasina">
+      <Card
+        description="A printable cheat sheet labeling every toki pona word with its corresponding definition."
+        descriptionTp="lipu ni: ona jo e nimi ale pi toki pona e toki pi nimi ni."
+        href="/toki-pona"
+        hrefLabel=""
+        imageAlt="The toki pona words 'lape', 'laso', 'lawa', 'leko', and 'len' next to their definitions."
+        imageSrc={tokiPonaCheatSheet}
+        title="Cheat sheet"
+        titleTp="lipu pi pali lili"
+        type="print"
+      />
+
       <Card
         description="A newsletter about all kinds of things written in pure toki pona."
         descriptionTp="lipu tenpo ni: ona li jo e sitelen pi toki pona."
@@ -104,18 +117,6 @@
 
     <Section title="sitelen pona (iconographic script)" titleTp="sitelen pona">
       <Card
-        description="A series introducing sitelen pona in 13 short videos."
-        descriptionTp="sitelen tawa mute ni: ona li kama e sitelen pona tawa sina."
-        href="https://www.youtube.com/watch?v=Uze2LKVN-2E&list=PLJjeLfR6etE69KRFWQB1guBjfWIw8NN75&index=1"
-        hrefLabel="youtube.com @ musi lili"
-        imageAlt="TODO"
-        imageSrc={oKamaSonaESitelenPona}
-        title="Introductory video series"
-        titleTp="sitelen tawa mute kama"
-        type="video"
-      />
-
-      <Card
         description="A printable cheat sheet labeling every sitelen pona glyph with its corresponding word."
         descriptionTp="lipu ni: ona jo e sitelen pona e toki pona."
         href="/sitelen-pona"
@@ -126,12 +127,36 @@
         titleTp="lipu pi pali lili"
         type="print"
       />
+
+      <Card
+        description="A series introducing sitelen pona in 13 short videos."
+        descriptionTp="sitelen tawa mute ni: ona li kama e sitelen pona tawa sina."
+        href="https://www.youtube.com/watch?v=Uze2LKVN-2E&list=PLJjeLfR6etE69KRFWQB1guBjfWIw8NN75&index=1"
+        hrefLabel="youtube.com @ musi lili"
+        imageAlt="TODO"
+        imageSrc={oKamaSonaESitelenPona}
+        title="Introductory video series"
+        titleTp="sitelen tawa mute kama"
+        type="video"
+      />
     </Section>
 
     <Section
       title="sitelen sitelen (hieroglyphic script)"
       titleTp="sitelen sitelen"
     >
+      <Card
+        description="A printable cheat sheet labeling every sitelen sitelen glyph with its corresponding word."
+        descriptionTp="lipu ni: ona jo e sitelen sitelen e toki pona."
+        href="/sitelen-sitelen"
+        hrefLabel=""
+        imageAlt="lanpan"
+        imageSrc={sitelenSitelenCheatSheet}
+        title="Cheat sheet"
+        titleTp="lipu pi pali lili"
+        type="print"
+      />
+
       <Card
         description=""
         descriptionTp=""
@@ -163,18 +188,6 @@
           </ul>
         </svelte:fragment>
       </Card>
-
-      <Card
-        description="A printable cheat sheet labeling every sitelen sitelen glyph with its corresponding word."
-        descriptionTp="lipu ni: ona jo e sitelen sitelen e toki pona."
-        href="/sitelen-sitelen"
-        hrefLabel=""
-        imageAlt="lanpan"
-        imageSrc={sitelenSitelenCheatSheet}
-        title="Cheat sheet"
-        titleTp="lipu pi pali lili"
-        type="print"
-      />
 
       <Card
         description="A live renderer that converts toki pona text into sitelen sitelen."

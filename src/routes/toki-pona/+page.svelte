@@ -29,31 +29,23 @@
     ...($showNimiPu || !$showNimiKu ? nimiPu : []),
     ...($showNimiKu ? nimiKu : []),
   ].sort()
+
+  $: finalizedWordList = $isShuffled ? shuffle(wordList) : wordList
 </script>
 
-<Title
-  title="sitelen pona cheat sheet"
-  titleTp="lipu pi pali lili pi sitelen pona"
-/>
+<Title title="toki pona cheat sheet" titleTp="lipu pi pali lili pi toki pona" />
 
 <Printed>
-  <p class="mb-2">
-    This page is rendered using
-    <a class="link" href="https://wyub.github.io/tokipona/linjasike"
-      >linja sike</a
-    >.
-  </p>
-
   <Checkbox
     bind:checked={$isLarge}
-    label="Show larger symbols?"
-    labelTp="o ken ala ken lukin e sitelen suli?"
+    label="Show larger words?"
+    labelTp="o ken ala ken lukin e nimi suli?"
   />
 
   <Checkbox
     bind:checked={$showDefinitions}
-    label="Show definitions?"
-    labelTp="o ken ala ken lukin e nimi mute?"
+    label="Show full definitions?"
+    labelTp="o ken ala ken lukin e toki pi nimi ale?"
   />
 
   <WordTypeCheckbox />
@@ -62,39 +54,34 @@
 </Printed>
 
 <div
-  class="grid min-h-full {$isLarge
-    ? $showDefinitions
-      ? 'grid-cols-[repeat(auto-fill,128px)]'
-      : 'grid-cols-[repeat(auto-fill,72px)]'
-    : $showDefinitions
-    ? 'grid-cols-[repeat(auto-fill,112px)]'
-    : 'grid-cols-[repeat(auto-fill,52px)]'} content-start justify-center gap-2 text-center"
+  class="{$isLarge || $showDefinitions
+    ? 'columns-3'
+    : 'columns-4'} relative left-2 [column-gap:0]"
 >
-  {#each $isShuffled ? shuffle(wordList) : wordList as word}
+  {#each finalizedWordList as word}
     <div
-      class="flex break-inside-avoid flex-col"
-      class:col-span-2={!$showDefinitions && word == "kijetesantakalu"}
+      class="grid break-inside-avoid items-baseline gap-2"
+      class:grid-cols-[3rem,auto]={!($isLarge || $showDefinitions)}
+      class:grid-cols-[4rem,auto]={$isLarge || $showDefinitions}
     >
       <p
-        class="{$isLarge
-          ? '-mb-4'
-          : '-mb-2'} font-['linja_sike',sans-serif] {$isLarge
-          ? 'text-[64px]'
-          : 'text-[40px]'}"
-        class:invisible={$isPractice}
+        class="{$isLarge || $showDefinitions
+          ? 'my-1'
+          : '-left-4 w-16'} relative text-right font-semibold decoration-black underline-offset-2"
+        class:underline={$isPractice}
+        class:text-transparent={$isPractice}
+        class:text-sm={!$isLarge}
       >
-        {word}
+        {$isPractice ? "QQQQ" : word == "kijetesantakalu" ? "kijete..." : word}
       </p>
 
-      <p class="{$isLarge ? '' : 'text-sm'} font-light">{word}</p>
-
-      {#if $showDefinitions}
-        {@const definition = words[word]?.definition}
-
-        <p class="text-xs text-slate-500 hyphens print:text-black">
-          {definition}
-        </p>
-      {/if}
+      <p
+        class="{$isLarge
+          ? 'text-sm'
+          : 'text-xs'} text-slate-500 print:text-black"
+      >
+        {$showDefinitions ? words[word]?.definition : words[word]?.short}
+      </p>
     </div>
   {/each}
 </div>

@@ -8,7 +8,13 @@
 </script>
 
 <label class="block">
-  <input bind:checked class="mr-1 border" disabled={!browser} type="checkbox" />
+  <input
+    bind:checked
+    on:input
+    class="mr-1 border"
+    disabled={!browser}
+    type="checkbox"
+  />
 
   {$tp ? labelTp : label}
 </label>

@@ -21,6 +21,10 @@ export const isPractice = persisted("cheat-sheet:is-practice", false, options)
 
 export const isShuffled = persisted("cheat-sheet:is-shuffled", false, options)
 
+export const showNimiPu = persisted("cheat-sheet:nimi-pu", true, options)
+
+export const showNimiKu = persisted("cheat-sheet:nimi-ku", true, options)
+
 export const showDefinitions = persisted(
   "cheat-sheet:show-definitions",
   false,

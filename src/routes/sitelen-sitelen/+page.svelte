@@ -1,28 +1,43 @@
 <script lang="ts">
   import Checkbox from "$lib/Checkbox.svelte"
   import PracticeButton from "$lib/PracticeButton.svelte"
-  import { shuffle } from "$lib/shuffle"
-  import { isPractice, isShuffled, showDefinitions, tp } from "$lib/stores"
   import Title from "$lib/Title.svelte"
+  import WordTypeCheckbox from "$lib/WordTypeCheckbox.svelte"
+  import { shuffle } from "$lib/shuffle"
+  import {
+    isPractice,
+    isShuffled,
+    showDefinitions,
+    showNimiKu,
+    showNimiPu,
+    tp,
+  } from "$lib/stores"
   import { persisted } from "svelte-local-storage-store"
   import { words } from "virtual:linku"
   import Printed from "../../lib/Printed.svelte"
 
-  const showWords = persisted("sitelen-sitelen:show-words", true)
   const showPunctuation = persisted("sitelen-sitelen:show-punctuation", true)
   const showSyllables = persisted("sitelen-sitelen:show-syllables", true)
 
-  let nimi_mute: [string, string][] =
-    "a akesi ala alasa ale anpa ante anu awen e en epiku esun ijo ike ilo insa jaki jan jasima jelo jo kala kalama kama kasi ken kepeken kijetesantakalu kili kin kipisi kiwen ko kokosila kon kule kulupu kute la lanpan lape laso lawa leko len lete li lili linja lipu loje lon luka lukin lupa ma mama mama_old mani meli meso mi mije misikeke moku moli monsi monsuta mu mun musi mute n namako nanpa nasa nasin nena ni nimi noka o oko olin ona open pakala pali palisa pan pana pi pilin pimeja pini pipi poka poki pona sama seli selo seme sewi sijelo sike sin sina sinpin sitelen soko sona soweli suli suno supa suwi tan taso tawa telo tenpo toki tomo tonsi tu unpa uta utala walo wan waso wawa weka wile"
+  const nimi_pu: [string, string][] =
+    "a akesi ala alasa ale anpa ante anu awen e en esun ijo ike ilo insa jaki jan jelo jo kala kalama kama kasi ken kepeken kili kiwen ko kon kule kulupu kute la lape laso lawa len lete li lili linja lipu loje lon luka lukin lupa ma mama mama_old mani meli mi mije moku moli monsi mu mun musi mute nanpa nasa nasin nena ni nimi noka o olin ona open pakala pali palisa pan pana pi pilin pimeja pini pipi poka poki pona sama seli selo seme sewi sijelo sike sin sina sinpin sitelen sona soweli suli suno supa suwi tan taso tawa telo tenpo toki tomo tu unpa uta utala walo wan waso wawa weka wile"
       .split(" ")
       .map((nimi) => [
         nimi == "mama_old" ? "mama (old)" : nimi,
+        `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${nimi}.jpg`,
+      ])
+
+  const nimi_ku: [string, string][] =
+    "epiku jasima kijetesantakalu kin kipisi kokosila lanpan leko meso misikeke monsuta n namako oko soko tonsi"
+      .split(" ")
+      .map((nimi) => [
+        nimi,
         `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${
           nimi == "misikeke" ? "misekeke" : nimi
         }.jpg`,
       ])
 
-  let nmpi_mute: [string, string][] = (
+  const nmpi: [string, string][] = (
     [
       ["[.]", "period"],
       ["[,]", "comma"],
@@ -37,7 +52,7 @@
     `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nmpi_${name}.jpg`,
   ])
 
-  let kala_lili_mute: [string, string][] =
+  const kala_lili: [string, string][] =
     "-- j- k- l- m- n- p- s- t- w- -a -e -i -o -u -n"
       .split(" ")
       .map((x) => [
@@ -49,9 +64,12 @@
       ])
 
   $: wordList = [
-    ...($showWords ? nimi_mute : []),
-    ...($showPunctuation ? nmpi_mute : []),
-    ...($showSyllables ? kala_lili_mute : []),
+    ...[
+      ...($showNimiPu ? nimi_pu : []),
+      ...($showNimiKu ? nimi_ku : []),
+    ].sort(),
+    ...($showPunctuation ? nmpi : []),
+    ...($showSyllables ? kala_lili : []),
   ]
 </script>
 
@@ -75,11 +93,7 @@
     labelTp="o ken lukin e nimi mute?"
   />
 
-  <Checkbox
-    bind:checked={$showWords}
-    label="Show words?"
-    labelTp="o ken lukin e nimi mute?"
-  />
+  <WordTypeCheckbox allowBothToBeUnchecked />
 
   <Checkbox
     bind:checked={$showPunctuation}
