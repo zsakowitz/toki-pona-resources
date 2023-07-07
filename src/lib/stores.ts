@@ -25,6 +25,12 @@ export const isPractice = persisted("cheat-sheet:is-practice", false, options)
 
 export const isShuffled = persisted("cheat-sheet:is-shuffled", false, options)
 
+export const stackedLayout = persisted(
+  "toki-pona:stacked-layout",
+  false,
+  options
+)
+
 export const showDefinitions = persisted(
   "cheat-sheet:show-definitions",
   false,
