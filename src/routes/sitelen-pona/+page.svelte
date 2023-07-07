@@ -2,33 +2,15 @@
   import Checkbox from "$lib/Checkbox.svelte"
   import PracticeButton from "$lib/PracticeButton.svelte"
   import Title from "$lib/Title.svelte"
-  import WordTypeCheckbox from "$lib/WordTypeCheckbox.svelte"
   import { shuffle } from "$lib/shuffle"
   import {
     isLarge,
     isPractice,
     isShuffled,
     showDefinitions,
-    showNimiKu,
-    showNimiPu,
+    visibleWords,
   } from "$lib/stores"
-  import { words } from "virtual:linku"
   import Printed from "../../lib/Printed.svelte"
-
-  const nimiPu =
-    "a akesi ala alasa ale anpa ante anu awen e en esun ijo ike ilo insa jaki jan jelo jo kala kalama kama kasi ken kepeken kili kiwen ko kon kule kulupu kute la lape laso lawa len lete li lili linja lipu loje lon luka lukin lupa ma mama mani meli mi mije moku moli monsi mu mun musi mute nanpa nasa nasin nena ni nimi noka o olin ona open pakala pali palisa pan pana pi pilin pimeja pini pipi poka poki pona pu sama seli selo seme sewi sijelo sike sin sina sinpin sitelen sona soweli suli suno supa suwi tan taso tawa telo tenpo toki tomo tu unpa uta utala walo wan waso wawa weka wile".split(
-      " "
-    )
-
-  const nimiKu =
-    "epiku jasima kijetesantakalu kin kipisi kokosila ku lanpan leko meso misikeke monsuta n namako oko soko tonsi yupekosi".split(
-      " "
-    )
-
-  $: wordList = [
-    ...($showNimiPu || !$showNimiKu ? nimiPu : []),
-    ...($showNimiKu ? nimiKu : []),
-  ].sort()
 </script>
 
 <Title
@@ -39,8 +21,10 @@
 <Printed>
   <p class="mb-2">
     This page is rendered using
-    <a class="link" href="https://wyub.github.io/tokipona/linjasike"
-      >linja sike</a
+    <a
+      class="link"
+      href="https://www.kreativekorp.com/software/fonts/sitelenselikiwen"
+      >sitelen seli kiwen</a
     >.
   </p>
 
@@ -56,8 +40,6 @@
     labelTp="o ken ala ken lukin e nimi mute?"
   />
 
-  <WordTypeCheckbox />
-
   <PracticeButton />
 </Printed>
 
@@ -70,15 +52,13 @@
     ? 'grid-cols-[repeat(auto-fill,112px)]'
     : 'grid-cols-[repeat(auto-fill,52px)]'} content-start justify-center gap-2 text-center"
 >
-  {#each $isShuffled ? shuffle(wordList) : wordList as word}
+  {#each $isShuffled ? shuffle($visibleWords) : $visibleWords as [word, info]}
     <div
       class="flex break-inside-avoid flex-col"
-      class:col-span-2={!$showDefinitions && word == "kijetesantakalu"}
+      class:col-span-2={!$showDefinitions && word.length >= 9}
     >
       <p
-        class="{$isLarge
-          ? '-mb-4'
-          : '-mb-2'} font-['linja_sike',sans-serif] {$isLarge
+        class="{$isLarge ? '-mb-4' : '-mb-2'} sitelen-pona {$isLarge
           ? 'text-[64px]'
           : 'text-[40px]'}"
         class:invisible={$isPractice}
@@ -89,10 +69,8 @@
       <p class="{$isLarge ? '' : 'text-sm'} font-light">{word}</p>
 
       {#if $showDefinitions}
-        {@const definition = words[word]?.definition}
-
         <p class="text-xs text-slate-500 hyphens print:text-black">
-          {definition}
+          {info.definition}
         </p>
       {/if}
     </div>

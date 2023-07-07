@@ -32,10 +32,13 @@ const config = {
       })
 
       api.addComponents({
-        ".linja-sike": {
-          "font-family": "'linja sike', sans-serif",
+        ".sitelen-pona-sized": {
+          "font-family": "'sitelen seli kiwen', sans-serif",
           "font-size": "1.5rem",
           "line-height": "1",
+        },
+        ".sitelen-pona": {
+          "font-family": "'sitelen seli kiwen', sans-serif",
         },
         ".link": {
           color: api.theme("colors.blue.500"),

@@ -7,8 +7,8 @@ export function shuffle<T>(array: readonly T[]): T[] {
   while (currentIndex) {
     randomIndex = Math.floor(Math.random() * currentIndex--)
     ;[output[randomIndex], output[currentIndex]] = [
-      output[currentIndex],
-      output[randomIndex],
+      output[currentIndex]!,
+      output[randomIndex]!,
     ]
   }
 

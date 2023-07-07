@@ -3,6 +3,7 @@
   import { tp } from "./stores"
 
   export let checked: boolean
+  export let disabled = false
   export let label: string
   export let labelTp: string
 </script>
@@ -12,7 +13,7 @@
     bind:checked
     on:input
     class="mr-1 border"
-    disabled={!browser}
+    disabled={disabled || !browser}
     type="checkbox"
   />
 

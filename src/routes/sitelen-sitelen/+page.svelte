@@ -2,40 +2,26 @@
   import Checkbox from "$lib/Checkbox.svelte"
   import PracticeButton from "$lib/PracticeButton.svelte"
   import Title from "$lib/Title.svelte"
-  import WordTypeCheckbox from "$lib/WordTypeCheckbox.svelte"
   import { shuffle } from "$lib/shuffle"
   import {
     isPractice,
     isShuffled,
     showDefinitions,
-    showNimiKu,
-    showNimiPu,
+    showPunctuation,
+    showSyllables,
+    showWords,
+    showWordsWithoutGlyphs,
     tp,
+    visibleWords,
   } from "$lib/stores"
-  import { persisted } from "svelte-local-storage-store"
   import { words } from "virtual:linku"
   import Printed from "../../lib/Printed.svelte"
 
-  const showPunctuation = persisted("sitelen-sitelen:show-punctuation", true)
-  const showSyllables = persisted("sitelen-sitelen:show-syllables", true)
-
-  const nimi_pu: [string, string][] =
-    "a akesi ala alasa ale anpa ante anu awen e en esun ijo ike ilo insa jaki jan jelo jo kala kalama kama kasi ken kepeken kili kiwen ko kon kule kulupu kute la lape laso lawa len lete li lili linja lipu loje lon luka lukin lupa ma mama mama_old mani meli mi mije moku moli monsi mu mun musi mute nanpa nasa nasin nena ni nimi noka o olin ona open pakala pali palisa pan pana pi pilin pimeja pini pipi poka poki pona sama seli selo seme sewi sijelo sike sin sina sinpin sitelen sona soweli suli suno supa suwi tan taso tawa telo tenpo toki tomo tu unpa uta utala walo wan waso wawa weka wile"
-      .split(" ")
-      .map((nimi) => [
-        nimi == "mama_old" ? "mama (old)" : nimi,
-        `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${nimi}.jpg`,
-      ])
-
-  const nimi_ku: [string, string][] =
-    "epiku jasima kijetesantakalu kin kipisi kokosila lanpan leko meso misikeke monsuta n namako oko soko tonsi"
-      .split(" ")
-      .map((nimi) => [
-        nimi,
-        `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${
-          nimi == "misikeke" ? "misekeke" : nimi
-        }.jpg`,
-      ])
+  const wordsWithIcons = new Set(
+    "a akesi ala alasa ale anpa ante anu awen e en epiku esun ijo ike ilo insa jaki jan jasima jelo jo kala kalama kama kasi ken kepeken kijetesantakalu kili kin kipisi kiwen ko kokosila kon kule kulupu kute la lanpan lape laso lawa leko len lete li lili linja lipu loje lon luka lukin lupa ma mama mama_old mani meli meso mi mije misikeke moku moli monsi monsuta mu mun musi mute n namako nanpa nasa nasin nena ni nimi noka o oko olin ona open pakala pali palisa pan pana pi pilin pimeja pini pipi poka poki pona sama seli selo seme sewi sijelo sike sin sina sinpin sitelen soko sona soweli suli suno supa suwi tan taso tawa telo tenpo toki tomo tonsi tu unpa uta utala walo wan waso wawa weka wile".split(
+      " "
+    )
+  )
 
   const nmpi: [string, string][] = (
     [
@@ -63,14 +49,33 @@
           .replace("-", "")}.jpg`,
       ])
 
-  $: wordList = [
-    ...[
-      ...($showNimiPu ? nimi_pu : []),
-      ...($showNimiKu ? nimi_ku : []),
-    ].sort(),
+  $: visibleWordNames = $visibleWords.map((x) => x[0])
+
+  $: wordsWithMamaOld = visibleWordNames.includes("mama")
+    ? visibleWordNames.concat("mama_old").sort()
+    : visibleWordNames
+
+  $: wordList1 = [
+    ...($showWords
+      ? wordsWithMamaOld.map(
+          (word) =>
+            [
+              word,
+              wordsWithIcons.has(word)
+                ? `https://jonathangabel.com/images/t47_tokipona/nimi/t47_nimi_${
+                    word == "misikeke" ? "misekeke" : word
+                  }.jpg`
+                : undefined,
+            ] as const
+        )
+      : []),
     ...($showPunctuation ? nmpi : []),
     ...($showSyllables ? kala_lili : []),
   ]
+
+  $: wordList = $showWordsWithoutGlyphs
+    ? wordList1
+    : wordList1.filter(([, src]) => src)
 </script>
 
 <Title
@@ -90,21 +95,32 @@
   <Checkbox
     bind:checked={$showDefinitions}
     label="Show definitions?"
-    labelTp="o ken lukin e nimi mute?"
+    labelTp="o lukin ala lukin e nimi mute?"
   />
 
-  <WordTypeCheckbox allowBothToBeUnchecked />
+  <Checkbox
+    bind:checked={$showWords}
+    label="Show words?"
+    labelTp="o lukin ala lukin e nimi?"
+  />
+
+  <Checkbox
+    bind:checked={$showWordsWithoutGlyphs}
+    disabled={!$showWords}
+    label="Show words without glyphs?"
+    labelTp="o lukin ala lukin e nimi pi sitelen ala?"
+  />
 
   <Checkbox
     bind:checked={$showPunctuation}
     label="Show punctuation?"
-    labelTp="o ken lukin e sitelen pini?"
+    labelTp="o lukin ala lukin e sitelen pini?"
   />
 
   <Checkbox
     bind:checked={$showSyllables}
     label="Show syllables?"
-    labelTp="o ken lukin e kalama nimi lili?"
+    labelTp="o lukin ala lukin e kalama nimi lili?"
   />
 
   <PracticeButton />
@@ -134,7 +150,7 @@
         aria-hidden="true"
         alt="sitelen sitelen glyph for {word}"
         class="bg mb-1 hidden h-16 w-16 bg-contain object-contain object-bottom print:block"
-        class:invisible={$isPractice}
+        class:invisible={src == null || $isPractice}
         {src}
       />
 

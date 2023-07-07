@@ -7,13 +7,20 @@ export const words = Object.fromEntries(
   Object.entries(linku.data).map(([key, word]) => [
     key,
     {
-      book: word.book == "none" ? undefined : word.book,
+      book:
+        word.book == "pu"
+          ? "pu"
+          : word.book == "ku suli"
+          ? "ku suli"
+          : word.book == "ku lili"
+          ? "ku lili"
+          : "nimi sin",
       definition: word.def.en,
-      sitelenPona: "sitelen_pona" in word ? word.sitelen_pona : undefined,
+      sitelenPona: "sitelen_pona" in word ? word.sitelen_pona : word,
       sitelenSitelen:
         "sitelen_sitelen" in word ? word.sitelen_sitelen : undefined,
       word: word.word,
-      usageCategory: word.usage_category,
+      usage: word.usage_category,
       short: {
         Pingo: "car",
         a: "(emphasis, emotion or confirmation)",
