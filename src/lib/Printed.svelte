@@ -17,7 +17,7 @@
 </script>
 
 <div
-  class="mx-8 my-4 select-none grid-cols-2 gap-x-8 rounded-lg bg-white px-4 py-3 dark:bg-slate-800 print:hidden sm:grid"
+  class="mx-8 my-4 select-none grid-cols-2 gap-x-8 rounded-lg bg-white px-4 py-3 dark:bg-slate-800 print:hidden sm:grid sm:print:hidden"
 >
   <div>
     <slot />
