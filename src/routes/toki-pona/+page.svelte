@@ -68,7 +68,7 @@
       >
         {$isPractice
           ? "QQQQ"
-          : word.length >= 8
+          : word.length > 8
           ? word.slice(0, 7) + "..."
           : word}
       </p>
