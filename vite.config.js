@@ -243,7 +243,7 @@ export const words = Object.fromEntries(
         taki: "sticky, magnetic, bond",
         tan: "by, from, because of",
         taso: "but, however, only",
-        tawa: "go to, toward, for, to, POV",
+        tawa: "go to, toward, for, to",
         te: "(open quote)",
         teje: "right, right side",
         telo: "water, liquid, beverage",
