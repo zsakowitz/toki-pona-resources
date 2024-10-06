@@ -48,7 +48,7 @@
     {$tp ? "ni li pali tan " : "Compiled by "}<a
       class="link"
       href="https://github.com/zsakowitz"
-      >{$tp ? "jan Sakawi" : "Zachary Sakowitz"}</a
+      >sakawi</a
     >{$tp ? " li awen ala." : ". Not copyrighted or licensed."}
   </p>
 </div>
